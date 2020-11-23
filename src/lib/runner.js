@@ -40,9 +40,6 @@ module.exports = async (lang, code) => {
     while (output.endsWith('\n')) {
         output = output.slice(0,output.length-1)
     }
-    await Util.exec(`docker rm ${container.id}`)
+    await Util.exec(`docker rm -f ${container.id}`)
     return {output, status: 'SUCCESS', exitCode}
 }
-
-
-module.exports('node', 'console.log(123123123)').then(res => console.log(res))
