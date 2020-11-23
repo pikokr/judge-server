@@ -7,5 +7,8 @@
   "license": "MIT",
   "dependencies": {
     "dockerode": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.9"
   }
 }
