@@ -5,4 +5,6 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY run.sh .
+COPY run.sh run.sh
+
+CMD ["/app/run.sh"]
