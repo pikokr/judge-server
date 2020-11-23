@@ -1,1 +1,1 @@
-docker build -t pikostudio/judge:node node
+docker build -t pikostudio/judge-runner:node node

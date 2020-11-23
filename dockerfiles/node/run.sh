@@ -1,1 +1,1 @@
-node /app/program.sh
+node /app/program.js
