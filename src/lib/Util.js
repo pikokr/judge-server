@@ -3,6 +3,10 @@ const Docker = require('dockerode')
 module.exports = class Util {
     static docker = new Docker()
 
+    /**
+     * @param {string} code
+     * @returns {Promise<string>}
+     */
     static exec(code) {
         return new Promise(resolve => {
             const {exec} = require('child_process')

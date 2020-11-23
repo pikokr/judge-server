@@ -25,12 +25,24 @@ module.exports = async (lang, code) => {
 
     console.log(container.id)
 
-    await fs.writeFile(`./.runners/${id}.${extensions[lang]}`, code)
-    await Util.exec(`docker cp .runners/${id}.${extensions[lang]} ${container.id}:/app/program.${extensions[lang]}`)
+    await fs.writeFile(`./.runners/${id}`, code)
+    await Util.exec(`docker cp .runners/${id} ${container.id}:/app/program.${extensions[lang]}`)
+    await fs.unlink(`./.runners/${id}`)
     await Util.exec(`docker start ${container.id}`)
-    console.log(JSON.parse(await Util.exec(`docker inspect ${container.id}`))[0].State)
-    console.log(await Util.exec(`docker logs ${container.id}`))
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    if (JSON.parse(await Util.exec(`docker inspect ${container.id}`))[0].State.Running) {
+        await Util.exec(`docker rm -f ${container.id}`)
+        console.log(`Killed container ${container.id}`)
+        return {state: 'TIMEOUT'}
+    }
+    const exitCode = JSON.parse(await Util.exec(`docker inspect ${container.id}`))[0].State.ExitCode
+    let output = (await Util.exec(`docker logs ${container.id}`))
+    while (output.endsWith('\n')) {
+        output = output.slice(0,output.length-1)
+    }
+    await Util.exec(`docker rm ${container.id}`)
+    return {output, status: 'SUCCESS', exitCode}
 }
 
 
-module.exports('node', '123123123')
+module.exports('node', 'console.log(123123123)').then(res => console.log(res))

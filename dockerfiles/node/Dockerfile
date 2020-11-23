@@ -5,6 +5,4 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY run.sh run.sh
-
-CMD ["/app/run.sh"]
+CMD ["node", "/app/program.js"]
